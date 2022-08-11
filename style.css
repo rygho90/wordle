@@ -103,6 +103,11 @@ h1 {
     width: 4.5rem;
     height: 4.5rem;
     border: solid 1px black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
 }
 
 .keyboard {
