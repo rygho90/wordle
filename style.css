@@ -127,3 +127,18 @@ h1 {
     border: solid 1px black;
     padding: 1rem;
 }
+
+.guessed-letter {
+  color: white;
+  background-color: #7f1d1d;
+}
+
+.missed-letter {
+  color: white;
+  background-color: #b59f3b;
+}
+
+.matched-letter {
+  color: white;
+  background-color: #538d4e;
+}

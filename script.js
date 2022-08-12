@@ -65,13 +65,28 @@ const gameController = (() => {
   ];
   let activeSquare = 0;
   let activeRow = 0;
-  let guessedWords = [];
+  let wordle = "JAZZY";
+
+  let letterData = {
+    guessedLetters: [],
+    missedLetters: [],
+    matchedLetters: [],
+  };
+
+  let rowData = {
+    guessedLetters: [],
+    missedLetters: [],
+    matchedLetters: [],
+  }
 
   const incrementActiveSquare = () => activeSquare++;
   const decrementActiveSquare = () => activeSquare--;
   const incrementActiveRow = () => activeRow++;
 
   const getGameBoard = () => gameBoard;
+  const getActiveRow = () => activeRow;
+  const getLetterData = () => letterData;
+  const getRowData = () => rowData;
 
   const addLetter = (letter) => {
     if (activeSquare === 5 + activeRow * 5) return;
@@ -88,14 +103,47 @@ const gameController = (() => {
   const submitWord = () => {
     if (activeSquare !== 5 + activeRow * 5) return;
 
-    let newWord = '';
-    for (let i = activeSquare - 5; i < activeSquare; i++) {
-        newWord += gameBoard[i]
+    let lettersToCheck = [];
+    rowData = {
+      guessedLetters: [],
+      missedLetters: [],
+      matchedLetters: [],
     }
-    guessedWords.push(newWord)
+    let pos = 0;
+    let lettersCorrect = 0;
+
+    for (let i = activeSquare - 5; i < activeSquare; i++) {
+      lettersToCheck.push(gameBoard[i]);
+    }
+
+    lettersToCheck.forEach((letter) => {
+      if (!wordle.includes(letter)) {
+        console.log("Letter not found");
+        if (!letterData.guessedLetters.includes(letter)) {
+          letterData.guessedLetters.push(letter);
+        }
+        rowData.guessedLetters.push(letter)
+      } else if (lettersToCheck[pos] === wordle[pos]) {
+        console.log("Letter found in correct spot");
+        if (!letterData.matchedLetters.includes(letter)) {
+          letterData.matchedLetters.push(letter);
+        }
+        rowData.matchedLetters.push(letter)
+        lettersCorrect++;
+      } else {
+        console.log("Letter found in incorrect spot");
+        if (!letterData.missedLetters.includes(letter)) {
+          letterData.missedLetters.push(letter);
+        }
+        rowData.missedLetters.push(letter)
+      }
+      pos++;
+    });
+
+    if (lettersCorrect === 5) console.log("Win!");
 
     incrementActiveRow();
-  }
+  };
 
   const resetGameBoard = () => {
     gameBoard.forEach((square) => {
@@ -105,6 +153,9 @@ const gameController = (() => {
 
   return {
     getGameBoard,
+    getActiveRow,
+    getLetterData,
+    getRowData,
     addLetter,
     deleteLetter,
     submitWord,
@@ -113,7 +164,7 @@ const gameController = (() => {
 })();
 
 const displayController = (() => {
-  const renderBoard = (board) => {
+  const renderLetters = (board) => {
     let count = 0;
     squareElements.forEach((square) => {
       square.textContent = board[count];
@@ -121,23 +172,42 @@ const displayController = (() => {
     });
   };
 
-  return { renderBoard };
+  const renderRowColors = (row, letterData) => {
+    const squareSpots = [0, 1, 2, 3, 4];
+    activeSquares = squareSpots.map((square) => square + (row - 1) * 5);
+
+    activeSquares.forEach((pos) => {
+      let activeLetter = squareElements[pos].textContent;
+      if (letterData.guessedLetters.includes(activeLetter))
+        squareElements[pos].classList.add("guessed-letter");
+      if (letterData.missedLetters.includes(activeLetter))
+        squareElements[pos].classList.add("missed-letter");
+      if (letterData.matchedLetters.includes(activeLetter))
+        squareElements[pos].classList.add("matched-letter");
+    });
+  };
+
+  return { renderLetters, renderRowColors };
 })();
 
 document.addEventListener("keypress", (e) => {
   if (!validLetters.includes(e.key.toUpperCase())) return;
 
   gameController.addLetter(e.key.toUpperCase());
-  displayController.renderBoard(gameController.getGameBoard());
+  displayController.renderLetters(gameController.getGameBoard());
 });
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "Backspace") {
     gameController.deleteLetter();
-    displayController.renderBoard(gameController.getGameBoard());
+    displayController.renderLetters(gameController.getGameBoard());
   }
 
   if (e.key === "Enter") {
     gameController.submitWord();
+    displayController.renderRowColors(
+      gameController.getActiveRow(),
+      gameController.getRowData()
+    );
   }
 });
