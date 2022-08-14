@@ -126,6 +126,7 @@ h1 {
 .keyboard-action {
     border: solid 1px black;
     padding: 1rem;
+    cursor: pointer;
 }
 
 .guessed-letter {

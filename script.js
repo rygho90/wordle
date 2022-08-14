@@ -126,6 +126,7 @@ const gameController = (() => {
         rowData.guessedLetters.push(letter);
       } else if (lettersToCheck[pos] === wordle[pos]) {
         console.log("Letter found in correct spot");
+        // Add a second condition to below if statement to also match the correct position
         if (!letterData.matchedLetters.includes(letter)) {
           letterData.matchedLetters.push(letter);
         }
@@ -220,6 +221,7 @@ document.addEventListener("keypress", (e) => {
   gameController.addLetter(e.key.toUpperCase());
   displayController.renderLetters(gameController.getGameBoard());
 
+  displayController.removeKeyTransition;
   keyElements.forEach((key) => {
     if (key.textContent === e.key.toUpperCase()) key.classList.add("pressed");
   });
@@ -244,3 +246,13 @@ document.addEventListener("keydown", (e) => {
 keyElements.forEach((key) =>
   key.addEventListener("transitionend", displayController.removeKeyTransition)
 );
+
+keyElements.forEach((key) => {
+  key.addEventListener("click", (e) => {
+    if (!validLetters.includes(key.textContent)) return;
+    displayController.removeKeyTransition;
+    gameController.addLetter(e.target.textContent);
+    displayController.renderLetters(gameController.getGameBoard());
+    key.classList.add("pressed");
+  });
+});
