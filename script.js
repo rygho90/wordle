@@ -201,7 +201,17 @@ const displayController = (() => {
     });
   };
 
-  return { renderLetters, renderRowColors, renderKeyColors };
+  const removeKeyTransition = (e) => {
+    if (e.propertyName !== "transform") return;
+    e.target.classList.remove("pressed");
+  };
+
+  return {
+    renderLetters,
+    renderRowColors,
+    renderKeyColors,
+    removeKeyTransition,
+  };
 })();
 
 document.addEventListener("keypress", (e) => {
@@ -209,6 +219,10 @@ document.addEventListener("keypress", (e) => {
 
   gameController.addLetter(e.key.toUpperCase());
   displayController.renderLetters(gameController.getGameBoard());
+
+  keyElements.forEach((key) => {
+    if (key.textContent === e.key.toUpperCase()) key.classList.add("pressed");
+  });
 });
 
 document.addEventListener("keydown", (e) => {
@@ -226,3 +240,7 @@ document.addEventListener("keydown", (e) => {
     displayController.renderKeyColors(gameController.getLetterData());
   }
 });
+
+keyElements.forEach((key) =>
+  key.addEventListener("transitionend", displayController.removeKeyTransition)
+);

@@ -142,3 +142,10 @@ h1 {
   color: white;
   background-color: #538d4e;
 }
+
+.pressed {
+  transform: scale(1.1);
+  border-color: black;
+  box-shadow: 0 0 1rem black;
+  transition-duration: 0.15s;
+}
