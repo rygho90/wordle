@@ -1,4 +1,5 @@
 const squareElements = document.querySelectorAll("[data-square]");
+const keyElements = document.querySelectorAll("[data-letter]");
 
 const wordleList = ["JAZZY"];
 const validLetters = [
@@ -77,7 +78,7 @@ const gameController = (() => {
     guessedLetters: [],
     missedLetters: [],
     matchedLetters: [],
-  }
+  };
 
   const incrementActiveSquare = () => activeSquare++;
   const decrementActiveSquare = () => activeSquare--;
@@ -108,7 +109,7 @@ const gameController = (() => {
       guessedLetters: [],
       missedLetters: [],
       matchedLetters: [],
-    }
+    };
     let pos = 0;
     let lettersCorrect = 0;
 
@@ -122,20 +123,20 @@ const gameController = (() => {
         if (!letterData.guessedLetters.includes(letter)) {
           letterData.guessedLetters.push(letter);
         }
-        rowData.guessedLetters.push(letter)
+        rowData.guessedLetters.push(letter);
       } else if (lettersToCheck[pos] === wordle[pos]) {
         console.log("Letter found in correct spot");
         if (!letterData.matchedLetters.includes(letter)) {
           letterData.matchedLetters.push(letter);
         }
-        rowData.matchedLetters.push(letter)
+        rowData.matchedLetters.push(letter);
         lettersCorrect++;
       } else {
         console.log("Letter found in incorrect spot");
         if (!letterData.missedLetters.includes(letter)) {
           letterData.missedLetters.push(letter);
         }
-        rowData.missedLetters.push(letter)
+        rowData.missedLetters.push(letter);
       }
       pos++;
     });
@@ -187,7 +188,20 @@ const displayController = (() => {
     });
   };
 
-  return { renderLetters, renderRowColors };
+  const renderKeyColors = (letterData) => {
+    keyElements.forEach((key) => {
+      console.log(key.textContent);
+      let activeLetter = key.textContent;
+      if (letterData.guessedLetters.includes(activeLetter))
+        key.classList.add("guessed-letter");
+      if (letterData.missedLetters.includes(activeLetter))
+        key.classList.add("missed-letter");
+      if (letterData.matchedLetters.includes(activeLetter))
+        key.classList.add("matched-letter");
+    });
+  };
+
+  return { renderLetters, renderRowColors, renderKeyColors };
 })();
 
 document.addEventListener("keypress", (e) => {
@@ -209,5 +223,6 @@ document.addEventListener("keydown", (e) => {
       gameController.getActiveRow(),
       gameController.getRowData()
     );
+    displayController.renderKeyColors(gameController.getLetterData());
   }
 });
