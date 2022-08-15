@@ -88,6 +88,7 @@ const gameController = (() => {
   const getActiveRow = () => activeRow;
   const getLetterData = () => letterData;
   const getRowData = () => rowData;
+  const getWordle = () => wordle;
 
   const addLetter = (letter) => {
     if (activeSquare === 5 + activeRow * 5) return;
@@ -158,6 +159,7 @@ const gameController = (() => {
     getActiveRow,
     getLetterData,
     getRowData,
+    getWordle,
     addLetter,
     deleteLetter,
     submitWord,
@@ -184,14 +186,16 @@ const displayController = (() => {
         squareElements[pos].classList.add("guessed-letter");
       if (letterData.missedLetters.includes(activeLetter))
         squareElements[pos].classList.add("missed-letter");
-      if (letterData.matchedLetters.includes(activeLetter))
+      if (
+        letterData.matchedLetters.includes(activeLetter) &&
+        activeLetter === gameController.getWordle()[pos]
+      )
         squareElements[pos].classList.add("matched-letter");
     });
   };
 
   const renderKeyColors = (letterData) => {
     keyElements.forEach((key) => {
-      console.log(key.textContent);
       let activeLetter = key.textContent;
       if (letterData.guessedLetters.includes(activeLetter))
         key.classList.add("guessed-letter");
