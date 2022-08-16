@@ -188,7 +188,7 @@ const displayController = (() => {
         squareElements[pos].classList.add("missed-letter");
       if (
         letterData.matchedLetters.includes(activeLetter) &&
-        activeLetter === gameController.getWordle()[pos]
+        activeLetter === gameController.getWordle()[pos - ((row - 1) * 5)] 
       )
         squareElements[pos].classList.add("matched-letter");
     });
