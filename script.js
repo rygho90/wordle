@@ -1,5 +1,7 @@
 const squareElements = document.querySelectorAll("[data-square]");
 const keyElements = document.querySelectorAll("[data-letter]");
+const endGameModal = document.querySelector('[data-end-game]')
+const endGameText = document.querySelector('[data-end-text]')
 
 const wordleList = ["JAZZY"];
 const validLetters = [
@@ -142,7 +144,9 @@ const gameController = (() => {
       pos++;
     });
 
-    if (lettersCorrect === 5) console.log("Win!");
+
+    if (lettersCorrect === 5) displayController.showEndGameModal("won")
+    if (activeRow >= 5 && lettersCorrect !== 5) displayController.showEndGameModal("lost")
 
     incrementActiveRow();
   };
@@ -210,11 +214,18 @@ const displayController = (() => {
     e.target.classList.remove("pressed");
   };
 
+  const showEndGameModal = (outcome) => {
+    endGameModal.classList.remove("hide")
+    outcome === "won" ? endGameModal.classList.add("matched-letter") : endGameModal.classList.add("guessed-letter")
+    endGameText.textContent = `You ${outcome}!`
+  }
+
   return {
     renderLetters,
     renderRowColors,
     renderKeyColors,
     removeKeyTransition,
+    showEndGameModal
   };
 })();
 
