@@ -127,7 +127,6 @@ const gameController = (() => {
         rowData.guessedLetters.push(letter);
       } else if (lettersToCheck[pos] === wordle[pos]) {
         console.log("Letter found in correct spot");
-        // Add a second condition to below if statement to also match the correct position
         if (!letterData.matchedLetters.includes(letter)) {
           letterData.matchedLetters.push(letter);
         }

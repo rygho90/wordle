@@ -150,3 +150,35 @@ h1 {
   box-shadow: 0 0 1rem black;
   transition-duration: 0.15s;
 }
+
+.end-game {
+  width: 300px;
+  height: 300px;
+  border-radius: 8px;
+
+  position: absolute;
+  z-index: 10;
+  font-size: 2rem;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 5px 5px 5px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.play-again {
+  margin-top: 2rem;
+  font-size: 1.25rem;
+  background-color: white;
+  color: black;
+  padding: 0.45rem;
+}
+
+.hide {
+  display: none;
+}
