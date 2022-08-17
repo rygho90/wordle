@@ -1,7 +1,8 @@
 const squareElements = document.querySelectorAll("[data-square]");
 const keyElements = document.querySelectorAll("[data-letter]");
-const endGameModal = document.querySelector('[data-end-game]')
-const endGameText = document.querySelector('[data-end-text]')
+const endGameModal = document.querySelector("[data-end-game]");
+const endGameText = document.querySelector("[data-end-text]");
+const resetButton = document.querySelector("[data-reset-btn]");
 
 const wordleList = ["JAZZY"];
 const validLetters = [
@@ -34,7 +35,7 @@ const validLetters = [
 ];
 
 const gameController = (() => {
-  const gameBoard = [
+  let gameBoard = [
     null,
     null,
     null,
@@ -144,17 +145,61 @@ const gameController = (() => {
       pos++;
     });
 
-
-    if (lettersCorrect === 5) displayController.showEndGameModal("won")
-    if (activeRow >= 5 && lettersCorrect !== 5) displayController.showEndGameModal("lost")
+    if (lettersCorrect === 5) displayController.showEndGameModal("won");
+    if (activeRow >= 5 && lettersCorrect !== 5)
+      displayController.showEndGameModal("lost");
 
     incrementActiveRow();
   };
 
-  const resetGameBoard = () => {
-    gameBoard.forEach((square) => {
-      gameBoard[square] = null;
-    });
+  const resetGame = () => {
+    gameBoard = [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ];
+    activeSquare = 0;
+    activeRow = 0;
+    wordle = "JAZZY";
+
+    letterData = {
+      guessedLetters: [],
+      missedLetters: [],
+      matchedLetters: [],
+    };
+
+    rowData = {
+      guessedLetters: [],
+      missedLetters: [],
+      matchedLetters: [],
+    };
   };
 
   return {
@@ -166,7 +211,7 @@ const gameController = (() => {
     addLetter,
     deleteLetter,
     submitWord,
-    resetGameBoard,
+    resetGame,
   };
 })();
 
@@ -191,7 +236,7 @@ const displayController = (() => {
         squareElements[pos].classList.add("missed-letter");
       if (
         letterData.matchedLetters.includes(activeLetter) &&
-        activeLetter === gameController.getWordle()[pos - ((row - 1) * 5)] 
+        activeLetter === gameController.getWordle()[pos - (row - 1) * 5]
       )
         squareElements[pos].classList.add("matched-letter");
     });
@@ -215,17 +260,37 @@ const displayController = (() => {
   };
 
   const showEndGameModal = (outcome) => {
-    endGameModal.classList.remove("hide")
-    outcome === "won" ? endGameModal.classList.add("matched-letter") : endGameModal.classList.add("guessed-letter")
-    endGameText.textContent = `You ${outcome}!`
-  }
+    endGameModal.classList.remove("hide");
+    outcome === "won"
+      ? endGameModal.classList.add("matched-letter")
+      : endGameModal.classList.add("guessed-letter");
+    endGameText.textContent = `You ${outcome}!`;
+  };
+
+  const resetDisplay = () => {
+    squareElements.forEach((square) => {
+      square.textContent = null;
+      square.classList.remove("guessed-letter");
+      square.classList.remove("missed-letter");
+      square.classList.remove("matched-letter");
+    });
+    keyElements.forEach((key) => {
+      key.classList.remove("guessed-letter");
+      key.classList.remove("missed-letter");
+      key.classList.remove("matched-letter");
+    });
+    endGameModal.classList.add("hide");
+    endGameModal.classList.remove("matched-letter");
+    endGameModal.classList.remove("guessed-letter");
+  };
 
   return {
     renderLetters,
     renderRowColors,
     renderKeyColors,
     removeKeyTransition,
-    showEndGameModal
+    showEndGameModal,
+    resetDisplay,
   };
 })();
 
@@ -269,4 +334,9 @@ keyElements.forEach((key) => {
     displayController.renderLetters(gameController.getGameBoard());
     key.classList.add("pressed");
   });
+});
+
+resetButton.addEventListener("click", () => {
+  gameController.resetGame();
+  displayController.resetDisplay();
 });
