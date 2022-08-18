@@ -15607,6 +15607,12 @@ document.addEventListener("keydown", (e) => {
   }
 
   if (e.key === "Enter") {
+    if (!endGameModal.classList.contains("hide")) {
+      gameController.resetGame();
+      displayController.resetDisplay();
+      return;
+    }
+
     gameController.submitWord();
     displayController.renderRowColors(
       gameController.getActiveRow(),
