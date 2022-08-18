@@ -15399,6 +15399,12 @@ const gameController = (() => {
 
   const submitWord = () => {
     if (activeSquare !== 5 + activeRow * 5) return;
+    let wordToCheck = "";
+    for (let i = activeSquare - 5; i < activeSquare; i++) {
+      wordToCheck += gameBoard[i];
+    }
+    console.log(wordToCheck)
+    if (!dictionary.includes(wordToCheck.toLowerCase())) return;
 
     let lettersToCheck = [];
     rowData = {
