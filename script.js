@@ -15359,7 +15359,9 @@ const gameController = (() => {
   ];
   let activeSquare = 0;
   let activeRow = 0;
-  let wordle = "JAZZY";
+  let wordle =
+    wordleList[Math.floor(Math.random() * wordleList.length)].toUpperCase();
+  console.log(wordle);
 
   let letterData = {
     guessedLetters: [],
@@ -15477,7 +15479,9 @@ const gameController = (() => {
     ];
     activeSquare = 0;
     activeRow = 0;
-    wordle = "JAZZY";
+    wordle =
+      wordleList[Math.floor(Math.random() * wordleList.length)].toUpperCase();
+    console.log(wordle);
 
     letterData = {
       guessedLetters: [],
