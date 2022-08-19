@@ -15403,9 +15403,11 @@ const gameController = (() => {
     for (let i = activeSquare - 5; i < activeSquare; i++) {
       wordToCheck += gameBoard[i];
     }
-    console.log(wordToCheck)
-    if (!dictionary.includes(wordToCheck.toLowerCase())) return;
-
+    console.log(wordToCheck);
+    if (!dictionary.includes(wordToCheck.toLowerCase())) {
+      displayController.shakeSquares(activeRow);
+      return;
+    }
     let lettersToCheck = [];
     rowData = {
       guessedLetters: [],
@@ -15542,6 +15544,16 @@ const displayController = (() => {
     });
   };
 
+  const shakeSquares = (row) => {
+    const squareSpots = [0, 1, 2, 3, 4];
+    let activeSquares = squareSpots.map((square) => square + (row) * 5);
+
+    activeSquares.forEach((pos) => {
+      squareElements[pos].classList.add("shake");
+    });
+
+  };
+
   const renderKeyColors = (letterData) => {
     keyElements.forEach((key) => {
       let activeLetter = key.textContent;
@@ -15557,6 +15569,10 @@ const displayController = (() => {
   const removeKeyTransition = (e) => {
     if (e.propertyName !== "transform") return;
     e.target.classList.remove("pressed");
+  };
+
+  const removeShake = (e) => {
+    e.target.classList.remove("shake");
   };
 
   const showEndGameModal = (outcome) => {
@@ -15587,8 +15603,10 @@ const displayController = (() => {
   return {
     renderLetters,
     renderRowColors,
+    shakeSquares,
     renderKeyColors,
     removeKeyTransition,
+    removeShake,
     showEndGameModal,
     resetDisplay,
   };
@@ -15630,6 +15648,10 @@ document.addEventListener("keydown", (e) => {
 
 keyElements.forEach((key) =>
   key.addEventListener("transitionend", displayController.removeKeyTransition)
+);
+
+squareElements.forEach((square) =>
+  square.addEventListener("animationend", displayController.removeShake)
 );
 
 keyElements.forEach((key) => {
