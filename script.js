@@ -15375,6 +15375,21 @@ const gameController = (() => {
     matchedLetters: [],
   };
 
+  const stats = {
+    gamesPlayed: 0,
+    gamesWon: 0,
+    currStreak: 0,
+    bestStreak: 0,
+    guessDistribution: {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+      6: 0,
+    },
+  };
+
   const incrementActiveSquare = () => activeSquare++;
   const decrementActiveSquare = () => activeSquare--;
   const incrementActiveRow = () => activeRow++;
@@ -15445,9 +15460,12 @@ const gameController = (() => {
       pos++;
     });
 
-    if (lettersCorrect === 5) displayController.showEndGameModal("won");
-    if (activeRow >= 5 && lettersCorrect !== 5)
+    if (lettersCorrect === 5) {
+      displayController.showEndGameModal("won");
+    }
+    if (activeRow >= 5 && lettersCorrect !== 5) {
       displayController.showEndGameModal("lost");
+    }
 
     incrementActiveRow();
   };
@@ -15546,12 +15564,11 @@ const displayController = (() => {
 
   const shakeSquares = (row) => {
     const squareSpots = [0, 1, 2, 3, 4];
-    let activeSquares = squareSpots.map((square) => square + (row) * 5);
+    let activeSquares = squareSpots.map((square) => square + row * 5);
 
     activeSquares.forEach((pos) => {
       squareElements[pos].classList.add("shake");
     });
-
   };
 
   const renderKeyColors = (letterData) => {

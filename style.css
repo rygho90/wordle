@@ -127,6 +127,8 @@ h1 {
     border: solid 1px black;
     padding: 1rem;
     cursor: pointer;
+    min-width: 2.75rem;
+    text-align: center;
 }
 
 .guessed-letter {
@@ -177,7 +179,13 @@ h1 {
   background-color: white;
   color: black;
   padding: 0.45rem;
+  cursor: pointer;
 }
+
+.play-again:hover {
+  box-shadow: 0 0.875rem 1.75rem rgba(0,0,0,0.25), 0 0.625rem 0.625rem rgba(0,0,0,0.22);
+}
+
 
 .hide {
   display: none;
