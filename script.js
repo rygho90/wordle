@@ -1,5 +1,6 @@
 const squareElements = document.querySelectorAll("[data-square]");
 const keyElements = document.querySelectorAll("[data-letter]");
+const modalBackground = document.querySelector("[data-modal-background]");
 const endGameModal = document.querySelector("[data-end-game]");
 const endGameText = document.querySelector("[data-end-text]");
 const resetButton = document.querySelector("[data-reset-btn]");
@@ -15584,7 +15585,6 @@ const displayController = (() => {
   };
 
   const removeKeyTransition = (e) => {
-    if (e.propertyName !== "transform") return;
     e.target.classList.remove("pressed");
   };
 
@@ -15593,6 +15593,7 @@ const displayController = (() => {
   };
 
   const showEndGameModal = (outcome) => {
+    modalBackground.classList.remove("hide");
     endGameModal.classList.remove("hide");
     outcome === "won"
       ? endGameModal.classList.add("matched-letter")
@@ -15615,6 +15616,7 @@ const displayController = (() => {
     endGameModal.classList.add("hide");
     endGameModal.classList.remove("matched-letter");
     endGameModal.classList.remove("guessed-letter");
+    modalBackground.classList.add("hide");
   };
 
   return {
