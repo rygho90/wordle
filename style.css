@@ -160,7 +160,7 @@ h1 {
 
 .end-game {
   width: 300px;
-  height: 300px;
+  min-height: 300px;
   border-radius: 8px;
 
   position: absolute;
@@ -225,6 +225,23 @@ h1 {
   background-color: rgba(0,0,0,0.4);
   left: 0;
   top: 0;
+}
+
+.menu-button {
+  cursor: pointer;
+}
+
+.menu-button:hover {
+  opacity: 0.7;
+}
+
+.definition {
+  margin: 15px auto 0px;
+}
+
+.definition-pos,
+.definition-def {
+  font-size: 1rem;
 }
 
 .hide {

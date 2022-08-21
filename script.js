@@ -5,6 +5,10 @@ const endGameModal = document.querySelector("[data-end-game]");
 const endGameText = document.querySelector("[data-end-text]");
 const resetButton = document.querySelector("[data-reset-btn]");
 
+const defWord = document.querySelector("[data-def-word]");
+const defPOS = document.querySelector("[data-def-pos]");
+const defDef = document.querySelector("[data-def-def]");
+
 const dictionary = [
   "aahed",
   "aalii",
@@ -15419,7 +15423,7 @@ const gameController = (() => {
     for (let i = activeSquare - 5; i < activeSquare; i++) {
       wordToCheck += gameBoard[i];
     }
-    console.log(wordToCheck);
+    //console.log(wordToCheck);
     if (!dictionary.includes(wordToCheck.toLowerCase())) {
       displayController.shakeSquares(activeRow);
       return;
@@ -15439,20 +15443,20 @@ const gameController = (() => {
 
     lettersToCheck.forEach((letter) => {
       if (!wordle.includes(letter)) {
-        console.log("Letter not found");
+        //console.log("Letter not found");
         if (!letterData.guessedLetters.includes(letter)) {
           letterData.guessedLetters.push(letter);
         }
         rowData.guessedLetters.push(letter);
       } else if (lettersToCheck[pos] === wordle[pos]) {
-        console.log("Letter found in correct spot");
+        //console.log("Letter found in correct spot");
         if (!letterData.matchedLetters.includes(letter)) {
           letterData.matchedLetters.push(letter);
         }
         rowData.matchedLetters.push(letter);
         lettersCorrect++;
       } else {
-        console.log("Letter found in incorrect spot");
+        //console.log("Letter found in incorrect spot");
         if (!letterData.missedLetters.includes(letter)) {
           letterData.missedLetters.push(letter);
         }
@@ -15462,6 +15466,8 @@ const gameController = (() => {
     });
 
     if (lettersCorrect === 5) {
+      defWord.textContent = wordle;
+      getDefinition(wordle);
       displayController.showEndGameModal("won");
     }
     if (activeRow >= 5 && lettersCorrect !== 5) {
@@ -15687,3 +15693,19 @@ resetButton.addEventListener("click", () => {
   gameController.resetGame();
   displayController.resetDisplay();
 });
+
+function getDefinition(word) {
+  fetch(
+    `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=25fb7521-4435-44b6-a1e3-9e0ee5f8d284`,
+    { mode: "cors" }
+  )
+    .then((response) => response.json())
+    .then((data) => renderData(data));
+}
+
+function renderData(data) {
+  console.log(data);
+  defPOS.textContent = data[0].fl;
+  defDef.textContent = data[0].shortdef;
+
+}
