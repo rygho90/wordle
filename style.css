@@ -239,7 +239,11 @@ h1 {
   margin: 15px auto 0px;
 }
 
-.definition-pos,
+.definition-pos {
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
 .definition-def {
   font-size: 1rem;
 }
