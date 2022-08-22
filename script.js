@@ -15471,6 +15471,8 @@ const gameController = (() => {
       displayController.showEndGameModal("won");
     }
     if (activeRow >= 5 && lettersCorrect !== 5) {
+      defWord.textContent = wordle;
+      getDefinition(wordle);
       displayController.showEndGameModal("lost");
     }
 
