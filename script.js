@@ -15383,8 +15383,6 @@ const gameController = (() => {
   const stats = {
     gamesPlayed: 0,
     gamesWon: 0,
-    currStreak: 0,
-    bestStreak: 0,
     guessDistribution: {
       1: 0,
       2: 0,
@@ -15468,11 +15466,13 @@ const gameController = (() => {
     if (lettersCorrect === 5) {
       defWord.textContent = wordle;
       getDefinition(wordle);
+      updateStats("won");
       displayController.showEndGameModal("won");
     }
     if (activeRow >= 5 && lettersCorrect !== 5) {
       defWord.textContent = wordle;
       getDefinition(wordle);
+      updateStats("lost");
       displayController.showEndGameModal("lost");
     }
 
@@ -15529,6 +15529,12 @@ const gameController = (() => {
       missedLetters: [],
       matchedLetters: [],
     };
+  };
+
+  const updateStats = (outcome) => {
+    stats.gamesPlayed += 1;
+    if (outcome === "won") stats.gamesWon += 1;
+    console.log(stats);
   };
 
   return {
@@ -15706,8 +15712,6 @@ function getDefinition(word) {
 }
 
 function renderData(data) {
-  console.log(data);
   defPOS.textContent = data[0].fl;
   defDef.textContent = data[0].shortdef;
-
 }
